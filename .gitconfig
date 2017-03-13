@@ -1,0 +1,22 @@
+[alias]
+  ci = commit
+  st = status
+ 	please = push --force-with-lease
+ 	commend = commit --amend --no-edit
+ 	prettylog = log --pretty=oneline --graph --decorate
+ 	shorty = status --short --branch
+
+[branch]
+	autosetuprebase = always
+
+[credential]
+	helper = cache --timeout=43200
+
+[remote]
+	pushdefault = origin
+
+[push]
+	default = current
+
+[rerere]
+	enabled = true

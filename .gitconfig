@@ -1,3 +1,7 @@
+[user]
+	email = kevin.pennarun@gmail.com
+	name = kepennar
+
 [alias]
   ci = commit
   st = status

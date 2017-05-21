@@ -26,6 +26,7 @@ alias gst='git status'
 alias gci='git commit'
 alias gpush='git push'
 alias gplease='git please'
+alias gcz='git cz' # commitizen alias
 
 # Alias remove unused docker images
 alias drmi="docker system prune"

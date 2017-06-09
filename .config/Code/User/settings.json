@@ -1,13 +1,13 @@
 // Place your settings in this file to overwrite the default settings
 {
-	"editor.fontSize": 14,
-	"editor.tabSize": 2,
-  "editor.fontLigatures": true,
-  "editor.fontFamily": "Fira Code",
-  "editor.minimap.enabled": true,
-  "typescript.check.tscVersion": false,
-  "window.zoomLevel": 0,
-  "vsicons.projectDetection.autoReload": true,
-  "workbench.colorTheme": "Material Theme",
-  "workbench.iconTheme": "material-icon-theme"
+    "editor.fontSize": 14,
+    "editor.tabSize": 2,
+    "editor.fontLigatures": true,
+    "editor.fontFamily": "Fira Code",
+    "editor.minimap.enabled": true,
+    "editor.multiCursorModifier": "ctrlCmd",
+    "typescript.check.tscVersion": false,
+    "window.zoomLevel": 0,
+    "workbench.colorTheme": "One Dark Pro",
+    "workbench.iconTheme": "material-icon-theme"
 }

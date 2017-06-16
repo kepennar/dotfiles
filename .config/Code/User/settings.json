@@ -9,5 +9,6 @@
     "typescript.check.tscVersion": false,
     "window.zoomLevel": 0,
     "workbench.colorTheme": "One Dark Pro",
-    "workbench.iconTheme": "material-icon-theme"
+    "workbench.iconTheme": "material-icon-theme",
+    "prettier.singleQuote": true
 }

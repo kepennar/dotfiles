@@ -1,5 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/home/kepennar/.oh-my-zsh
+export PATH=~/.npm-packages/bin:$PATH
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -16,6 +17,7 @@ plugins=(git npm docker)
 # User configuration
 
 source $ZSH/oh-my-zsh.sh
+source ~/.functions
 
 # aliases
 alias ll="ls -als --color=auto"	

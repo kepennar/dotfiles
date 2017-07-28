@@ -5,3 +5,8 @@ function mkd() {
 function f() {
     find . -name "$1"
 }
+
+# Display node package version. usage "npversion [package-name]"
+function npversion() {
+	cat node_modules/$1/package.json | grep version
+}

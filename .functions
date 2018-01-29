@@ -10,3 +10,11 @@ function f() {
 function npversion() {
 	cat node_modules/$1/package.json | grep version
 }
+
+# Usage `docker_debug front_a` will exec bash in a container which name contains "front_a"
+function docker_debug() {
+  name=$1
+
+  matchingStarted=$(docker ps --filter="name=$name" -q | xargs)
+  [[ -n $matchingStarted ]] && docker exec -it $matchingStarted bash
+}

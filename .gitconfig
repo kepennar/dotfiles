@@ -1,26 +1,33 @@
 [user]
-	email = kevin.pennarun@gmail.com
-	name = kepennar
+  email = kevin.pennarun@gmail.com
+  name = kepennar
 
 [alias]
   ci = commit
   st = status
- 	please = push --force-with-lease
- 	commend = commit --amend --no-edit
- 	prettylog = log --pretty=oneline --graph --decorate
- 	shorty = status --short --branch
+  please = push --force-with-lease
+  commend = commit --amend --no-edit
+  prettylog = log --pretty=oneline --graph --decorate
+  shorty = status --short --branch
 
 [branch]
-	autosetuprebase = always
+  autosetuprebase = always
 
 [credential]
-	helper = cache --timeout=43200
+  helper = cache --timeout=43200
 
 [remote]
-	pushdefault = origin
+  pushdefault = origin
 
 [push]
-	default = current
+  default = current
 
 [rerere]
-	enabled = true
+  enabled = true
+  
+[merge]
+  tool = meld
+
+[diff]
+  guitool = meld
+  tool = meld

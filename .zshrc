@@ -21,6 +21,7 @@ source ~/.functions
 
 # aliases
 alias ll="ls -als --color=auto"	
+alias untar="tar -xvzf"
 
 # Git aliases
 alias gco='git checkout'

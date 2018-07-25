@@ -1,23 +1,19 @@
-// Place your settings in this file to overwrite the default settings
 {
-    "editor.fontSize": 14,
+  // Place your settings in this file to overwrite the default settings
+  "editor.fontSize": 14,
   "editor.tabSize": 2,
   "editor.fontFamily": "Fira Code",
   "editor.fontLigatures": true,
-  "vscode_custom_css.imports": [
-    "file:////home/kepennar/softwares/dev/vscode-style/style.css"
-  ],
   "editor.minimap.enabled": true,
-  "window.zoomLevel": 0,
-  "workbench.colorTheme": "Rocket",
+  "window.zoomLevel": 1,
+  "workbench.colorTheme": "Night Owl",
   "workbench.iconTheme": "material-icon-theme",
   "prettier.singleQuote": true,
   "extensions.ignoreRecommendations": false,
   "editor.formatOnSave": true,
-  "[markdown]": {
-    "editor.formatOnSave": false
-  },
   "files.associations": {
     "dockerfile-*": "dockerfile"
-  }
+  },
+  "material-icon-theme.showUpdateMessage": false,
+  "typescript.updateImportsOnFileMove.enabled": "always"
 }

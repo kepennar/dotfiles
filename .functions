@@ -18,3 +18,33 @@ function docker_debug() {
   matchingStarted=$(docker ps --filter="name=$name" -q | xargs)
   [[ -n $matchingStarted ]] && docker exec -it $matchingStarted bash
 }
+
+
+function new-red() {
+  mkdir -p "$@" && cd "$@"
+  touch $@{.reducer,.sagas,.actions,.model,.selectors}.ts
+  touch index.ts  
+}
+
+function new-comp() {
+  mkdir -p "$@" && cd "$@"
+  touch $@{.component.tsx,.container.ts,.module.scss,.model.ts}
+  touch index.ts  
+}
+
+# find shorthand
+function f() {
+    find . -name "$1"
+}
+
+# Start an HTTP server from a directory, optionally specifying the port
+function server() {
+	local port="${1:-8000}"
+	npx http-server  -p ${port} .
+}
+
+# Quickly install @types/..
+# Usage: `ty react react-dom`
+function ty() {
+    yarn add --dev ${*/#/@types\/}
+}

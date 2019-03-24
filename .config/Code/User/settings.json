@@ -1,3 +1,4 @@
+
 {
   // Place your settings in this file to overwrite the default settings
   "editor.fontSize": 14,
@@ -8,12 +9,26 @@
   "window.zoomLevel": 1,
   "workbench.colorTheme": "Night Owl",
   "workbench.iconTheme": "material-icon-theme",
-  "prettier.singleQuote": true,
   "extensions.ignoreRecommendations": false,
-  "editor.formatOnSave": true,
+  "window.titleBarStyle": "custom",
+
   "files.associations": {
     "dockerfile-*": "dockerfile"
   },
-  "material-icon-theme.showUpdateMessage": false,
-  "typescript.updateImportsOnFileMove.enabled": "always"
+  "editor.formatOnSave": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "breadcrumbs.enabled": true,
+  "cSpell.userWords": [
+    "Dropzone",
+    "Formik",
+    "Unmount",
+    "paginator",
+    "promisify"
+  ],
+  "python.linting.pylintArgs": [
+    "--extension-pkg-whitelist=cv2"
+  ],
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
 }

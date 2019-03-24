@@ -1,28 +1,23 @@
+code --install-extension CoenraadS.bracket-pair-colorizer
+code --install-extension cssho.vscode-svgviewer
+code --install-extension DavidAnson.vscode-markdownlint
+code --install-extension eamodio.gitlens
+code --install-extension esbenp.prettier-vscode
+code --install-extension formulahendry.auto-close-tag
+code --install-extension kumar-harsh.graphql-for-vscode
+code --install-extension mrmlnc.vscode-scss
+code --install-extension ms-python.python
+code --install-extension ms-vscode.vscode-typescript-tslint-plugin
+code --install-extension ms-vsliveshare.vsliveshare
+code --install-extension PeterJausovec.vscode-docker
+code --install-extension PKief.material-icon-theme
+code --install-extension pnp.polacode
+code --install-extension robinbentley.sass-indented
+code --install-extension ryu1kn.partial-diff
+code --install-extension sdras.night-owl
+code --install-extension streetsidesoftware.code-spell-checker
+code --install-extension teamchilla.blueprint
+code --install-extension Tyriar.sort-lines
+code --install-extension VisualStudioExptTeam.vscodeintellicode
+code --install-extension wix.vscode-import-cost
 
-Angular.ng-template
-CoenraadS.bracket-pair-colorizer
-DavidAnson.vscode-markdownlint
-PKief.material-icon-theme
-PeterJausovec.vscode-docker
-TwentyChung.jsx
-Tyriar.sort-lines
-be5invis.vscode-custom-css
-bierner.emojisense
-cssho.vscode-svgviewer
-eg2.tslint
-esbenp.prettier-vscode
-formulahendry.auto-close-tag
-freebroccolo.reasonml
-johnpapa.Angular2
-kumar-harsh.graphql-for-vscode
-mrmlnc.vscode-scss
-ms-python.python
-ms-vscode.node-debug2
-naereen.makefiles-support-for-vscode
-natewallace.angular2-inline
-patrys.vscode-code-outline
-pnp.polacode
-robinbentley.sass-indented
-ryu1kn.partial-diff
-sdras.night-owl
-streetsidesoftware.code-spell-checker

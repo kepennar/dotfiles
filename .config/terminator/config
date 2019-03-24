@@ -13,9 +13,10 @@
 [plugins]
 [profiles]
   [[default]]
+    show_titlebar = false
     background_darkness = 0.87
     background_type = transparent
     cursor_color = "#aaaaaa"
     font = Inconsolata Medium 12
     scrollback_lines = 100000
-    use_system_font = False
+use_system_font = False

@@ -1,6 +1,7 @@
 [user]
   email = kevin.pennarun@gmail.com
-  name = kepennar
+  name = Kevin Pennarun
+
 
 [alias]
   ci = commit
@@ -27,7 +28,7 @@
   
 [merge]
   tool = meld
-	conflictstyle = diff3
+  conflictstyle = diff3
 
 [diff]
   guitool = meld

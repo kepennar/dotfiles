@@ -12,34 +12,22 @@ ZSH_THEME="spaceship"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git npm docker zsh-autosuggestions pass)
+plugins=(git npm yarn docker zsh-autosuggestions pass)
 
 # User configuration
 source $ZSH/oh-my-zsh.sh
+
 source ~/.functions
+source ~/.aliases
 
-# aliases
-alias ll="ls -als --color=auto"	
-alias untar="tar -xvzf"
-
-# Git aliases
-alias gco='git checkout'
-alias gst='git status'
-alias gci='git commit'
-alias gpush='git push'
-alias gplease='git please'
-alias gcz='git cz' # commitizen alias
-
-# Alias remove unused docker images
-alias drmi="docker system prune"
-
-alias dockre="docker"
 # Java
 export JAVA_HOME=/home/kepennar/bin/jdk
 # Go
-export GOROOT=/home/kepennar/bin/go1.9.6
+export GOROOT=/home/kepennar/bin/go
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-source ~/.autoenv/activate.sh
+# source ~/.autoenv/activate.sh
+
+ 

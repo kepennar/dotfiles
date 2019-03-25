@@ -1,0 +1,5 @@
+alias gc='git commit'
+alias gco='git checkout'
+alias gpull='git pull'
+alias gpush='git push'
+alias gpushf='git please'

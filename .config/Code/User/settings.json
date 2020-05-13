@@ -1,9 +1,8 @@
-
 {
   // Place your settings in this file to overwrite the default settings
   "editor.fontSize": 14,
   "editor.tabSize": 2,
-  "editor.fontFamily": "Fira Code",
+  "editor.fontFamily": "Cascadia Code",
   "editor.fontLigatures": true,
   "editor.minimap.enabled": true,
   "window.zoomLevel": 1,
@@ -19,16 +18,52 @@
   "typescript.updateImportsOnFileMove.enabled": "always",
   "breadcrumbs.enabled": true,
   "cSpell.userWords": [
+    "Algo",
+    "Autocompletable",
+    "Collapsable",
+    "Doctolib",
     "Dropzone",
+    "Farte",
     "Formik",
+    "Restux",
+    "Scrollable",
+    "Securite",
+    "Sociale",
+    "Synchronizable",
     "Unmount",
+    "birthdate",
+    "deserialize",
+    "firestore",
     "paginator",
-    "promisify"
-  ],
-  "python.linting.pylintArgs": [
-    "--extension-pkg-whitelist=cv2"
+    "promisify",
+    "refetch",
+    "serializable",
+    "serializr",
+    "splited"
   ],
   "javascript.updateImportsOnFileMove.enabled": "always",
   "editor.suggestSelection": "first",
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue"
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "terminal.integrated.fontFamily": "Cascadia Code",
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "liveshare.account": "github",
+  "liveshare.featureSet": "insiders"
 }

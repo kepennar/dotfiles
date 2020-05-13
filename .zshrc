@@ -1,11 +1,14 @@
-# Path to your oh-my-zsh installation.
-export ZSH=/home/kepennar/.oh-my-zsh
-export PATH=~/.npm-packages/bin:~/bin:$PATH
+# If you come from bash you might have to change your $PATH.
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+ZSH=/usr/share/oh-my-zsh/
+ZSH_CUSTOM=/home/kepennar/.oh-my-zsh
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
 ZSH_THEME="spaceship"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
@@ -15,19 +18,18 @@ ZSH_THEME="spaceship"
 plugins=(git npm yarn docker zsh-autosuggestions pass)
 
 # User configuration
-source $ZSH/oh-my-zsh.sh
 
 source ~/.functions
 source ~/.aliases
 
 # Java
-export JAVA_HOME=/home/kepennar/bin/jdk
-# Go
-export GOROOT=/home/kepennar/bin/go
+export JAVA_HOME=/home/kepennar/softwares/dev/jdk
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# source ~/.autoenv/activate.sh
 
- 
+ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
+if [[ ! -d $ZSH_CACHE_DIR ]]; then
+  mkdir $ZSH_CACHE_DIR
+fi
+
+
+source $ZSH/oh-my-zsh.sh

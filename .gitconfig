@@ -57,3 +57,6 @@
 
 [init]
 	defaultBranch = main
+
+[core]
+	excludesfile = /home/kepennar/.gitignore

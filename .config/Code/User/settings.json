@@ -5,37 +5,40 @@
   "editor.fontFamily": "Cascadia Code",
   "editor.fontLigatures": true,
   "editor.minimap.enabled": true,
-  "window.zoomLevel": 1,
-  "workbench.colorTheme": "Night Owl",
-  "workbench.iconTheme": "material-icon-theme",
   "extensions.ignoreRecommendations": false,
   "window.titleBarStyle": "custom",
 
   "files.associations": {
     "dockerfile-*": "dockerfile"
   },
-  "editor.formatOnSave": true,
   "typescript.updateImportsOnFileMove.enabled": "always",
   "breadcrumbs.enabled": true,
   "cSpell.userWords": [
+    "Aglo",
     "Algo",
     "Autocompletable",
     "Collapsable",
     "Doctolib",
+    "Dolby",
     "Dropzone",
     "Farte",
     "Formik",
+    "Initialized",
     "Restux",
     "Scrollable",
     "Securite",
+    "Sentry",
     "Sociale",
     "Synchronizable",
     "Unmount",
+    "authenticated",
     "birthdate",
     "deserialize",
     "firestore",
+    "justplayfair",
     "paginator",
     "promisify",
+    "props",
     "refetch",
     "serializable",
     "serializr",
@@ -43,7 +46,6 @@
   ],
   "javascript.updateImportsOnFileMove.enabled": "always",
   "editor.suggestSelection": "first",
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -63,7 +65,39 @@
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "diffEditor.ignoreTrimWhitespace": false,
-  "liveshare.account": "github",
-  "liveshare.featureSet": "insiders"
+  "extensions.autoUpdate": false,
+  "cSpell.language": ",fr",
+  "editor.formatOnSave": true,
+  "liveshare.presence": true,
+  "[graphql]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "terminal.integrated.scrollback": 10000,
+  "github.copilot.enable": {
+    "*": true
+  },
+  "terminal.integrated.tabs.location": "left",
+  "gitlens.hovers.currentLine.over": "line",
+  "telemetry.telemetryLevel": "off",
+  "editor.inlineSuggest.enabled": true,
+  "[dockercompose]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "explorer.fileNesting.enabled": true,
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "[mjml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.colorTheme": "GitHub Dark Colorblind (Beta)",
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.iconTheme": "symbols",
+  "svelte.enable-ts-plugin": true,
+  "svelte.plugin.svelte.note-new-transformation": false,
+  "window.zoomLevel": 1
 }

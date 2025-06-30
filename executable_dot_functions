@@ -34,5 +34,21 @@ function server() {
 # Quickly install @types/..
 # Usage: `ty react react-dom`
 function ty() {
-    yarn add --dev ${*/#/@types\/}
+    pnpm add --dev ${*/#/@types\/}
+}
+
+
+# Fix corrupted zsh history
+function zsh_history_fix() {
+	mv ~/.zsh_history ~/.zsh_history_bad
+	strings ~/.zsh_history_bad > ~/.zsh_history
+	fc -R ~/.zsh_history
+	rm ~/.zsh_history_bad
+}
+
+fgit() {
+  local repo=$(find ~/git -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | fzf --height 40% --reverse --border --preview 'tree -C ~/git/{} | head -200')
+  if [[ -n $repo ]]; then
+    cd "$repo"
+  fi
 }

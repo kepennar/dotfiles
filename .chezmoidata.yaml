@@ -1,0 +1,31 @@
+personal:
+  name: "kepennar"
+  email: "{{ .chezmoi.config.data.personal.email | required }}"
+  github_username: "{{ .chezmoi.config.data.personal.username | required }}"
+
+development:
+  editor: "code"
+  shell: "zsh"
+  terminal: "terminator"
+
+fonts:
+  terminal: "CaskaydiaCove Nerd Font"
+  editor: "CaskaydiaCove Nerd Font"
+
+colors:
+  theme: "dark"
+
+paths:
+  workspace: "~/workspace"
+  projects: "~/projects"
+
+tools:
+  node_version: "lts"
+  python_version: "3.11"
+
+os:
+  is_linux: '{{ eq .chezmoi.os "linux" }}'
+  is_manjaro: '{{ contains "manjaro" (.chezmoi.osRelease.id | lower) }}'
+  is_arch: '{{ or (eq .chezmoi.osRelease.id "arch") (contains "manjaro" (.chezmoi.osRelease.id | lower)) }}'
+  is_ubuntu: '{{ or (eq .chezmoi.osRelease.id "ubuntu") (contains "ubuntu" (.chezmoi.osRelease.id | lower)) }}'
+  is_debian: '{{ or (eq .chezmoi.osRelease.id "debian") (contains "debian" (.chezmoi.osRelease.id | lower)) }}'

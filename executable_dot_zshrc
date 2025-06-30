@@ -3,8 +3,8 @@
 export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/.poetry/bin
 
 # Path to your oh-my-zsh installation.
-ZSH=/home/kepennar/.oh-my-zsh
-ZSH_CUSTOM=/home/kepennar/.oh-my-zsh
+ZSH=$HOME/.oh-my-zsh
+ZSH_CUSTOM=$HOME/.oh-my-zsh
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -49,25 +49,43 @@ source ~/.autoloader
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/kepennar/tools/google-cloud-sdk/path.zsh.inc' ]; then . '/home/kepennar/tools/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/home/kepennar/tools/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/kepennar/tools/google-cloud-sdk/completion.zsh.inc'; fi
-
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # bun completions
-[ -s "/home/kepennar/.bun/_bun" ] && source "/home/kepennar/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # Bun
-export BUN_INSTALL="/home/kepennar/.bun"
+export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # pnpm
-export PNPM_HOME="/home/kepennar/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
 # pnpm end
+
+# Go
+export PATH=$PATH:$HOME/softwares/dev/go/bin
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+# Go end
+
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
+
+# ssh-agent 
+export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '$HOME/softwares/dev/google-cloud-sdk/path.zsh.inc' ]; then . '$HOME/softwares/dev/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '$HOME/softwares/dev/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/softwares/dev/google-cloud-sdk/completion.zsh.inc'; fi
+export PATH=~/.npm-global/bin:$PATH
+
+
+# Idea
+export PATH=~/softwares/tools/idea/bin:$PATH
+alias claude="$HOME/.claude/local/claude"

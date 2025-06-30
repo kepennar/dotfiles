@@ -1,10 +1,11 @@
 {
   // Place your settings in this file to overwrite the default settings
-  "editor.fontSize": 14,
+  "editor.fontSize": 13,
   "editor.tabSize": 2,
-  "editor.fontFamily": "Cascadia Code",
+  "editor.fontFamily": "monaspace",
   "editor.fontLigatures": true,
   "editor.minimap.enabled": true,
+  "editor.stickyScroll.enabled": false,
   "extensions.ignoreRecommendations": false,
   "window.titleBarStyle": "custom",
 
@@ -53,51 +54,65 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "terminal.integrated.fontFamily": "Cascadia Code",
   "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "extensions.autoUpdate": false,
-  "cSpell.language": ",fr",
   "editor.formatOnSave": true,
-  "liveshare.presence": true,
+  "editor.codeActionsOnSave": {
+    "quickfix.biome": "explicit"
+  },
   "[graphql]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "terminal.integrated.scrollback": 10000,
   "github.copilot.enable": {
-    "*": true
+    "*": true,
+    "yaml": true,
+    "plaintext": false,
+    "markdown": true,
+    "scminput": false
   },
   "terminal.integrated.tabs.location": "left",
   "gitlens.hovers.currentLine.over": "line",
   "telemetry.telemetryLevel": "off",
   "editor.inlineSuggest.enabled": true,
-  "[dockercompose]": {
-    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
-  },
+  
   "explorer.fileNesting.enabled": true,
   "javascript.preferences.importModuleSpecifier": "relative",
   "typescript.preferences.importModuleSpecifier": "relative",
   "[mjml]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
-  "workbench.colorTheme": "GitHub Dark Colorblind (Beta)",
   "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "workbench.iconTheme": "symbols",
-  "svelte.enable-ts-plugin": true,
-  "svelte.plugin.svelte.note-new-transformation": false,
-  "window.zoomLevel": 1
+  "symbols.hidesExplorerArrows": false,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  "window.zoomLevel": 1,
+  "workbench.colorTheme": "GitHub Dark Dimmed",
+  "prisma.scriptRunner": "pnpm",
+  "github.copilot.nextEditSuggestions.enabled": false,
+  "editor.inlineSuggest.edits.renderSideBySide": "never",
+  "github.copilot.advanced": {},
+  "diffEditor.ignoreTrimWhitespace": false,
+  "github.copilot.selectedCompletionModel": "gpt-4o-copilot"
 }

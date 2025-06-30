@@ -1,6 +1,6 @@
 [user]
-  email = kevin.pennarun@gmail.com
-  name = Kevin Pennarun
+  email = {{ .personal.email }}
+  name = {{ .personal.name }}
 
 
 [alias]
@@ -14,6 +14,7 @@
 [branch]
   autosetuprebase = always
   sort=-committerdate  # DESC
+	autoSetupMerge = always
 
 [credential]
   helper = cache --timeout=43200
@@ -22,7 +23,8 @@
   pushdefault = origin
 
 [push]
-  default = current
+	default = current
+	autoSetupRemote = true
 
 [rerere]
   enabled = true
@@ -60,3 +62,6 @@
 
 [core]
 	excludesfile = /home/kepennar/.gitignore
+	editor = {{ .development.editor }}
+[pull]
+	default = current

@@ -1,0 +1,62 @@
+# Sensitive files and directories
+**/.env
+**/.env.*
+**/secrets.yaml
+**/secrets.yml
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+**/.aws/credentials
+**/.ssh/id_*
+**/.ssh/*_rsa
+**/.ssh/*_ed25519
+**/.gnupg/
+
+# Package manager files with tokens
+.npmrc
+.pypirc
+.cargo/credentials
+
+# Cache and temporary files
+**/.cache/
+**/cache/
+**/.tmp/
+**/tmp/
+**/.DS_Store
+**/Thumbs.db
+
+# History files (may contain sensitive commands)
+.bash_history
+.zsh_history
+.python_history
+.node_repl_history
+
+# Browser data
+**/.mozilla/
+**/.config/google-chrome/
+**/.config/chromium/
+
+# IDE specific files
+**/.vscode/settings.json
+**/.idea/
+
+# Log files
+**/*.log
+**/logs/
+
+# Build artifacts
+**/node_modules/
+**/dist/
+**/build/
+**/.next/
+**/.nuxt/
+
+# Database files
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+
+# Configuration files that may contain secrets
+**/*config*local*
+**/*config*private*

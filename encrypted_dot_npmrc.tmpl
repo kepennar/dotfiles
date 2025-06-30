@@ -1,0 +1,18 @@
+{{- /* This file stores npm configuration with sensitive data encrypted */ -}}
+# NPM Configuration
+author={{ .personal.name }}
+
+# Registry configuration
+registry=https://registry.npmjs.org/
+
+# Add your npm auth token here (this file is encrypted)
+# //registry.npmjs.org/:_authToken=YOUR_TOKEN_HERE
+
+# Cache settings
+cache=~/.npm
+
+# Logging
+loglevel=warn
+
+# Security
+audit-level=moderate

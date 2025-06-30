@@ -1,0 +1,66 @@
+#!/bin/bash
+# Install and configure fonts
+
+set -e
+
+{{ $osId := .chezmoi.osRelease.id | lower }}
+
+echo "🔤 Installing fonts..."
+
+# Create fonts directory
+mkdir -p ~/.local/share/fonts
+
+{{- if (contains "arch" $osId) }}
+# Install via package manager first
+if ! fc-list | grep -i "cascadia" &> /dev/null; then
+    echo "📦 Installing Cascadia Code Nerd Font via pacman..."
+    sudo pacman -S --needed --noconfirm ttf-cascadia-code-nerd
+fi
+{{- else if (contains "ubuntu" $osId) }}
+# Ubuntu doesn't have Cascadia Code in default repos, will use manual install
+echo "📋 Ubuntu detected - using manual font installation..."
+{{- end }}
+
+# Fallback: Download and install manually if not available
+if ! fc-list | grep -i "cascadia" &> /dev/null; then
+    echo "📥 Downloading Cascadia Code Nerd Font..."
+    
+    FONT_VERSION="v3.1.1"
+    FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/${FONT_VERSION}/CascadiaCode.zip"
+    TEMP_DIR="/tmp/cascadia-font"
+    
+    mkdir -p "${TEMP_DIR}"
+    cd "${TEMP_DIR}"
+    
+    if command -v curl &> /dev/null; then
+        curl -L "${FONT_URL}" -o CascadiaCode.zip
+    elif command -v wget &> /dev/null; then
+        wget "${FONT_URL}" -O CascadiaCode.zip
+    else
+        echo "❌ Error: Neither curl nor wget found. Cannot download fonts."
+        exit 1
+    fi
+    
+    unzip -q CascadiaCode.zip
+    cp *.ttf ~/.local/share/fonts/
+    
+    cd -
+    rm -rf "${TEMP_DIR}"
+fi
+
+# Refresh font cache
+echo "🔄 Refreshing font cache..."
+fc-cache -fv
+
+# Verify installation
+if fc-list | grep -i "cascadia" &> /dev/null; then
+    echo "✅ Cascadia Code Nerd Font installed successfully!"
+    echo "📋 Available variants:"
+    fc-list | grep -i "cascadia" | cut -d: -f2 | sort | uniq
+else
+    echo "❌ Font installation may have failed. Please check manually."
+    exit 1
+fi
+
+echo "🔤 Font installation completed!"
+echo "📝 Note: You may need to restart applications to see the new fonts."

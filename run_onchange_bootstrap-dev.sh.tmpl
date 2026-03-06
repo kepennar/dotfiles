@@ -1,0 +1,88 @@
+#!/bin/bash
+# Bootstrap dev: mise, direnv, dev tools, docker
+# hash: {{ include ".chezmoidata.yaml" | sha256sum }}
+
+set -euo pipefail
+
+{{ if not .features.install_dev_tools -}}
+echo "Dev tools install disabled, skipping."
+exit 0
+{{ end -}}
+
+{{ $osId := .chezmoi.osRelease.id | lower -}}
+
+echo "==> Bootstrap dev tools..."
+
+{{ if or (eq $osId "arch") (eq $osId "manjaro") -}}
+
+# mise
+if ! command -v mise &> /dev/null; then
+    sudo pacman -S --needed --noconfirm mise
+fi
+
+# direnv
+sudo pacman -S --needed --noconfirm direnv
+
+# Dev tools
+sudo pacman -S --needed --noconfirm \
+    lazygit \
+    github-cli \
+    just
+
+{{ if .features.docker -}}
+# Docker
+sudo pacman -S --needed --noconfirm docker docker-compose
+sudo systemctl enable --now docker.service
+if ! groups | grep -q docker; then
+    sudo usermod -aG docker "$USER"
+    echo "NOTE: Log out and back in for docker group to take effect."
+fi
+{{ end -}}
+
+{{ else if eq $osId "ubuntu" -}}
+
+# mise
+if ! command -v mise &> /dev/null; then
+    curl https://mise.run | sh
+fi
+
+# direnv
+sudo apt install -y direnv
+
+# Dev tools
+sudo apt install -y gh
+# lazygit
+if ! command -v lazygit &> /dev/null; then
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+    curl -Lo /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    tar xf /tmp/lazygit.tar.gz -C /tmp lazygit
+    sudo install /tmp/lazygit /usr/local/bin
+    rm -f /tmp/lazygit /tmp/lazygit.tar.gz
+fi
+
+# just
+if ! command -v just &> /dev/null; then
+    curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+fi
+
+{{ if .features.docker -}}
+# Docker
+sudo apt install -y docker.io docker-compose
+sudo systemctl enable --now docker.service
+if ! groups | grep -q docker; then
+    sudo usermod -aG docker "$USER"
+    echo "NOTE: Log out and back in for docker group to take effect."
+fi
+{{ end -}}
+
+{{ else -}}
+echo "WARN: Unsupported OS '{{ $osId }}'. Install dev tools manually."
+{{ end -}}
+
+# Post-install: mise runtimes
+if command -v mise &> /dev/null; then
+    echo "==> Installing runtimes via mise..."
+    mise install
+fi
+
+echo "==> Dev bootstrap done."

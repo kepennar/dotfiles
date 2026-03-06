@@ -1,0 +1,16 @@
+{{- $email := promptStringOnce . "personal.email" "Email address" -}}
+{{- $githubUsername := promptStringOnce . "personal.github_username" "GitHub username" -}}
+
+encryption = "age"
+
+[age]
+    identity = "~/.config/sops/age/chezmoi.txt"
+    recipient = "age1taqwz2dnx2977wtdynwcfqwcxmmcl3g5fpd308jxwq5jkqxtc4rqnyv0x9"
+
+[edit]
+    command = "code"
+    args = ["--wait"]
+
+[data.personal]
+    email = {{ $email | quote }}
+    github_username = {{ $githubUsername | quote }}

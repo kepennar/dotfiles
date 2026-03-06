@@ -1,0 +1,61 @@
+#!/bin/bash
+# Bootstrap desktop: GUI apps (ghostty, vscode, starship, etc.)
+# hash: {{ include ".chezmoidata.yaml" | sha256sum }}
+
+set -euo pipefail
+
+{{ if not (and .features.gui .features.install_desktop_apps) -}}
+echo "GUI features disabled, skipping."
+exit 0
+{{ end -}}
+
+{{ $osId := .chezmoi.osRelease.id | lower -}}
+
+echo "==> Bootstrap desktop apps..."
+
+{{ if or (eq $osId "arch") (eq $osId "manjaro") -}}
+
+# Ghostty
+if ! command -v ghostty &> /dev/null; then
+    yay -S --needed --noconfirm ghostty
+fi
+
+# VS Code
+sudo pacman -S --needed --noconfirm code
+
+# Starship prompt
+if ! command -v starship &> /dev/null; then
+    sudo pacman -S --needed --noconfirm starship
+fi
+
+# AUR packages
+yay -S --needed --noconfirm \
+    google-chrome \
+    discord
+
+{{ else if eq $osId "ubuntu" -}}
+
+# Ghostty (install from source or PPA depending on availability)
+if ! command -v ghostty &> /dev/null; then
+    echo "WARN: Ghostty must be installed manually on Ubuntu. See https://ghostty.org/docs/install"
+fi
+
+# VS Code
+if ! command -v code &> /dev/null; then
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /tmp/packages.microsoft.gpg
+    sudo install -o root -g root -m 644 /tmp/packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+    echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
+    sudo apt update && sudo apt install -y code
+    rm -f /tmp/packages.microsoft.gpg
+fi
+
+# Starship prompt
+if ! command -v starship &> /dev/null; then
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
+fi
+
+{{ else -}}
+echo "WARN: Unsupported OS '{{ $osId }}'. Install desktop apps manually."
+{{ end -}}
+
+echo "==> Desktop bootstrap done."

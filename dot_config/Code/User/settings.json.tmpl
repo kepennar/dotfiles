@@ -12,7 +12,7 @@
   "files.associations": {
     "dockerfile-*": "dockerfile"
   },
-  "typescript.updateImportsOnFileMove.enabled": "always",
+  "js/ts.updateImportsOnFileMove.enabled": "always",
   "breadcrumbs.enabled": true,
   "cSpell.userWords": [
     "Aglo",
@@ -45,29 +45,28 @@
     "serializr",
     "splited"
   ],
-  "javascript.updateImportsOnFileMove.enabled": "always",
   "editor.suggestSelection": "first",
   "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "[json]": {
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "[vue]": {
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   },
-  "terminal.integrated.fontFamily": "Cascadia Code",
+  "terminal.integrated.fontFamily": "{{ .fonts.terminal }}",
   "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "extensions.autoUpdate": false,
   "editor.formatOnSave": true,
@@ -75,10 +74,10 @@
     "quickfix.biome": "explicit"
   },
   "[graphql]": {
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "[markdown]": {
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "terminal.integrated.scrollback": 10000,
   "github.copilot.enable": {
@@ -94,8 +93,7 @@
   "editor.inlineSuggest.enabled": true,
   
   "explorer.fileNesting.enabled": true,
-  "javascript.preferences.importModuleSpecifier": "relative",
-  "typescript.preferences.importModuleSpecifier": "relative",
+  "js/ts.preferences.importModuleSpecifier": "relative",
   "[mjml]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
@@ -104,15 +102,10 @@
   },
   "workbench.iconTheme": "symbols",
   "symbols.hidesExplorerArrows": false,
-  "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff"
-  },
   "window.zoomLevel": 1,
   "workbench.colorTheme": "GitHub Dark Dimmed",
   "prisma.scriptRunner": "pnpm",
   "github.copilot.nextEditSuggestions.enabled": false,
   "editor.inlineSuggest.edits.renderSideBySide": "never",
-  "github.copilot.advanced": {},
-  "diffEditor.ignoreTrimWhitespace": false,
-  "github.copilot.selectedCompletionModel": "gpt-4o-copilot"
+  "diffEditor.ignoreTrimWhitespace": false,  
 }

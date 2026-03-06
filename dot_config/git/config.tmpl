@@ -2,7 +2,6 @@
   email = {{ .personal.email }}
   name = {{ .personal.name }}
 
-
 [alias]
   ci = commit
   st = status
@@ -13,8 +12,8 @@
 
 [branch]
   autosetuprebase = always
-  sort=-committerdate  # DESC
-	autoSetupMerge = always
+  sort = -committerdate
+  autoSetupMerge = always
 
 [credential]
   helper = cache --timeout=43200
@@ -23,12 +22,12 @@
   pushdefault = origin
 
 [push]
-	default = current
-	autoSetupRemote = true
+  default = current
+  autoSetupRemote = true
 
 [rerere]
   enabled = true
-  
+
 [merge]
   tool = meld
   conflictstyle = diff3
@@ -38,30 +37,29 @@
   tool = meld
 
 [core]
-	pager = diff-so-fancy | less --tabs=4 -RFX
+  pager = diff-so-fancy | less --tabs=4 -RFX
+  excludesfile = ~/.config/git/ignore
+  editor = {{ .development.editor }}
 
 [color]
-	ui = true
+  ui = true
 
 [color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
 
 [color "diff"]
-	meta = 11
-	frag = magenta bold
-	commit = yellow bold
-	old = red bold
-	new = green bold
-	whitespace = red reverse
+  meta = 11
+  frag = magenta bold
+  commit = yellow bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
 
 [init]
-	defaultBranch = main
+  defaultBranch = main
 
-[core]
-	excludesfile = /home/kepennar/.gitignore
-	editor = {{ .development.editor }}
 [pull]
-	default = current
+  default = current

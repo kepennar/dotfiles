@@ -3,6 +3,23 @@
 autoload -Uz compinit
 compinit -C
 
+# Case-insensitive and partial matching
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+
+# Menu selection
+zstyle ':completion:*' menu select
+
+# Group completions by category
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
+
+# Colors in completion menu
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+# Cache completions for speed
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zcompcache
+
 # zsh-autosuggestions
 [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
     source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh

@@ -3,7 +3,7 @@ personal:
 
 machine:
   role: "desktop" # desktop or server
-  desktop: "gnome" # gnome, kde, sway, none
+  desktop: "kde" # gnome, kde, sway, none
 
 features:
   gui: true

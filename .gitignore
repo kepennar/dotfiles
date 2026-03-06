@@ -1,0 +1,7 @@
+# Age key files — never commit
+**/key.txt
+**/chezmoi.txt
+
+# Decrypted secrets
+*.dec
+*.plain

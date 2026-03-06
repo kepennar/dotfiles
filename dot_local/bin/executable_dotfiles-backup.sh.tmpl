@@ -1,0 +1,75 @@
+#!/bin/bash
+# dotfiles-backup: backup secrets, keys, and system state
+
+set -euo pipefail
+
+TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+BACKUP_DIR="${HOME}/backups"
+BACKUP_NAME="dotfiles-backup-${TIMESTAMP}"
+WORK_DIR=$(mktemp -d)
+
+trap 'rm -rf "$WORK_DIR"' EXIT
+
+mkdir -p "$BACKUP_DIR"
+mkdir -p "$WORK_DIR/$BACKUP_NAME"
+
+echo "==> Creating backup: $BACKUP_NAME"
+
+# SSH keys
+if [ -d "$HOME/.ssh" ]; then
+    echo "  - SSH keys"
+    cp -r "$HOME/.ssh" "$WORK_DIR/$BACKUP_NAME/ssh"
+fi
+
+# GPG keys
+if command -v gpg &> /dev/null; then
+    if gpg --list-keys &> /dev/null 2>&1; then
+        echo "  - GPG keys"
+        mkdir -p "$WORK_DIR/$BACKUP_NAME/gpg"
+        gpg --export --armor > "$WORK_DIR/$BACKUP_NAME/gpg/public-keys.asc" 2>/dev/null || true
+        gpg --export-secret-keys --armor > "$WORK_DIR/$BACKUP_NAME/gpg/secret-keys.asc" 2>/dev/null || true
+        gpg --export-ownertrust > "$WORK_DIR/$BACKUP_NAME/gpg/ownertrust.txt" 2>/dev/null || true
+    fi
+fi
+
+# Workspace repos list
+WORKSPACE="${HOME}/{{ trimPrefix "~/" .paths.workspace }}"
+if [ -d "$WORKSPACE" ]; then
+    echo "  - Workspace repos"
+    find "$WORKSPACE" -maxdepth 2 -name ".git" -type d 2>/dev/null | while read -r gitdir; do
+        repo_dir=$(dirname "$gitdir")
+        remote=$(git -C "$repo_dir" remote get-url origin 2>/dev/null || echo "no-remote")
+        echo "$repo_dir -> $remote"
+    done > "$WORK_DIR/$BACKUP_NAME/workspace-repos.txt"
+fi
+
+# Installed packages
+{{ $osId := .chezmoi.osRelease.id | lower -}}
+echo "  - Package list"
+{{ if or (eq $osId "arch") (eq $osId "manjaro") -}}
+pacman -Qqe > "$WORK_DIR/$BACKUP_NAME/packages-explicit.txt" 2>/dev/null || true
+pacman -Qqm > "$WORK_DIR/$BACKUP_NAME/packages-aur.txt" 2>/dev/null || true
+{{ else if eq $osId "ubuntu" -}}
+dpkg --get-selections > "$WORK_DIR/$BACKUP_NAME/packages-dpkg.txt" 2>/dev/null || true
+{{ end -}}
+
+# VS Code extensions
+if command -v code &> /dev/null; then
+    echo "  - VS Code extensions"
+    code --list-extensions > "$WORK_DIR/$BACKUP_NAME/vscode-extensions.txt" 2>/dev/null || true
+fi
+
+# Chezmoi status
+if command -v chezmoi &> /dev/null; then
+    echo "  - Chezmoi status"
+    chezmoi status > "$WORK_DIR/$BACKUP_NAME/chezmoi-status.txt" 2>/dev/null || true
+    chezmoi data --format=yaml > "$WORK_DIR/$BACKUP_NAME/chezmoi-data.yaml" 2>/dev/null || true
+fi
+
+# Create archive
+ARCHIVE="$BACKUP_DIR/${BACKUP_NAME}.tar.gz"
+tar -czf "$ARCHIVE" -C "$WORK_DIR" "$BACKUP_NAME"
+
+echo ""
+echo "==> Backup created: $ARCHIVE"
+echo "    Size: $(du -h "$ARCHIVE" | cut -f1)"

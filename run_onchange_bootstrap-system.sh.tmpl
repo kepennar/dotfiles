@@ -1,0 +1,119 @@
+#!/bin/bash
+# Bootstrap system: base packages, modern CLI tools, shell setup
+# hash: {{ include ".chezmoidata.yaml" | sha256sum }}
+
+set -euo pipefail
+
+{{ $osId := .chezmoi.osRelease.id | lower -}}
+
+echo "==> Bootstrap system packages..."
+
+{{ if or (eq $osId "arch") (eq $osId "manjaro") -}}
+sudo pacman -Syu --noconfirm
+
+sudo pacman -S --needed --noconfirm \
+    base-devel \
+    git \
+    curl \
+    wget \
+    unzip \
+    vim \
+    htop \
+    tree \
+    fzf \
+    ripgrep \
+    fd \
+    bat \
+    eza \
+    dust \
+    procs \
+    diff-so-fancy \
+    zsh \
+    zsh-autosuggestions \
+    zsh-syntax-highlighting
+
+# Install yay (AUR helper) if not present
+if ! command -v yay &> /dev/null; then
+    echo "==> Installing yay..."
+    git clone https://aur.archlinux.org/yay.git /tmp/yay-install
+    cd /tmp/yay-install && makepkg -si --noconfirm && cd -
+    rm -rf /tmp/yay-install
+fi
+
+{{ else if eq $osId "ubuntu" -}}
+sudo apt update && sudo apt upgrade -y
+
+sudo apt install -y \
+    build-essential \
+    git \
+    curl \
+    wget \
+    unzip \
+    vim \
+    htop \
+    tree \
+    fzf \
+    ripgrep \
+    fd-find \
+    bat \
+    zsh \
+    zsh-autosuggestions \
+    zsh-syntax-highlighting
+
+# Tools not in default ubuntu repos
+if ! command -v eza &> /dev/null; then
+    cargo install eza 2>/dev/null || echo "WARN: could not install eza"
+fi
+
+if ! command -v dust &> /dev/null; then
+    cargo install du-dust 2>/dev/null || echo "WARN: could not install dust"
+fi
+
+if ! command -v procs &> /dev/null; then
+    cargo install procs 2>/dev/null || echo "WARN: could not install procs"
+fi
+
+# diff-so-fancy (required by git config pager)
+if ! command -v diff-so-fancy &> /dev/null; then
+    sudo npm install -g diff-so-fancy 2>/dev/null || echo "WARN: could not install diff-so-fancy"
+fi
+
+{{ else -}}
+echo "WARN: Unsupported OS '{{ $osId }}'. Install packages manually."
+{{ end -}}
+
+# Set zsh as default shell
+if command -v zsh &> /dev/null && [ "$SHELL" != "$(which zsh)" ]; then
+    echo "==> Setting zsh as default shell..."
+    chsh -s "$(which zsh)"
+fi
+
+{{ if .features.install_fonts -}}
+# Install fonts
+echo "==> Installing fonts..."
+mkdir -p ~/.local/share/fonts
+
+{{ if or (eq $osId "arch") (eq $osId "manjaro") -}}
+if ! fc-list | grep -qi "cascadia"; then
+    sudo pacman -S --needed --noconfirm ttf-cascadia-code-nerd
+fi
+{{ else if eq $osId "ubuntu" -}}
+echo "Ubuntu detected - using manual font installation..."
+{{ end -}}
+
+# Fallback: manual install if not available
+if ! fc-list | grep -qi "cascadia"; then
+    FONT_VERSION="{{ .fonts.nerd_font_version }}"
+    FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/${FONT_VERSION}/CascadiaCode.zip"
+    TEMP_DIR="/tmp/cascadia-font"
+    mkdir -p "${TEMP_DIR}"
+    curl -L "${FONT_URL}" -o "${TEMP_DIR}/CascadiaCode.zip"
+    unzip -q "${TEMP_DIR}/CascadiaCode.zip" -d "${TEMP_DIR}"
+    cp "${TEMP_DIR}"/*.ttf ~/.local/share/fonts/
+    rm -rf "${TEMP_DIR}"
+fi
+
+fc-cache -fv
+{{ end -}}
+
+echo "==> System bootstrap done."

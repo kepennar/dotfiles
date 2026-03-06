@@ -1,0 +1,20 @@
+# PATH configuration
+# Consolidated PATH - managed by chezmoi
+
+# Local binaries
+export PATH="$HOME/.local/bin:$HOME/bin:/usr/local/bin:$PATH"
+
+# mise shims (needed before mise activate for non-interactive contexts)
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+
+# Go
+export GOPATH="$HOME/go"
+export PATH="$PATH:$HOME/go/bin"
+
+# Deno
+export DENO_INSTALL="$HOME/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
+
+# Java
+export JAVA_HOME="$HOME/softwares/dev/jdk"
+export PATH="$JAVA_HOME/bin:$PATH"

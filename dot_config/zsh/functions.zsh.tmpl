@@ -1,0 +1,50 @@
+# Shell functions
+
+function mkd() {
+    mkdir -p "$@" && cd "$@"
+}
+
+function f() {
+    find . -name "$1"
+}
+
+# Display node package version. Usage: npversion [package-name]
+function npversion() {
+    cat node_modules/$1/package.json | grep version
+}
+
+# Usage: docker_debug front_a (exec bash in a container matching "front_a")
+function docker_debug() {
+    local name=$1
+    local matchingStarted=$(docker ps --filter="name=$name" -q | xargs)
+    [[ -n $matchingStarted ]] && docker exec -it $matchingStarted bash
+}
+
+# Start an HTTP server from a directory, optionally specifying the port
+function server() {
+    local port="${1:-8000}"
+    npx http-server -p ${port} .
+}
+
+# Quickly install @types/..
+# Usage: ty react react-dom
+function ty() {
+    pnpm add --dev ${*/#/@types\/}
+}
+
+# Fix corrupted zsh history
+function zsh_history_fix() {
+    mv ~/.zsh_history ~/.zsh_history_bad
+    strings ~/.zsh_history_bad > ~/.zsh_history
+    fc -R ~/.zsh_history
+    rm ~/.zsh_history_bad
+}
+
+# Jump to a project directory using fzf
+fgit() {
+    local ws="${HOME}/{{ trimPrefix "~/" .paths.workspace }}"
+    local repo=$(find "$ws" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | fzf --height 40% --reverse --border --preview "tree -C $ws/{} | head -200")
+    if [[ -n $repo ]]; then
+        cd "$ws/$repo"
+    fi
+}

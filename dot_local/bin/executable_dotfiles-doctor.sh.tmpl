@@ -1,0 +1,95 @@
+#!/bin/bash
+# dotfiles-doctor: health check for the dotfiles setup
+
+set -uo pipefail
+
+OK=0
+FAIL=0
+WARN=0
+
+check_ok() {
+    echo "[OK]   $1"
+    OK=$((OK + 1))
+}
+
+check_fail() {
+    echo "[FAIL] $1"
+    FAIL=$((FAIL + 1))
+}
+
+check_warn() {
+    echo "[WARN] $1"
+    WARN=$((WARN + 1))
+}
+
+echo "=== dotfiles-doctor ==="
+echo ""
+
+# zsh is default shell
+if [ "$SHELL" = "$(command -v zsh)" ]; then
+    check_ok "zsh is the default shell"
+else
+    check_fail "zsh is NOT the default shell (current: $SHELL)"
+fi
+
+# starship
+if command -v starship &> /dev/null; then
+    check_ok "starship installed ($(starship --version | head -1))"
+else
+    check_fail "starship not found"
+fi
+
+# ghostty
+if command -v ghostty &> /dev/null; then
+    check_ok "ghostty installed"
+else
+    check_warn "ghostty not found"
+fi
+
+# mise
+if command -v mise &> /dev/null; then
+    check_ok "mise installed ($(mise --version 2>/dev/null | head -1))"
+else
+    check_fail "mise not found"
+fi
+
+# direnv
+if command -v direnv &> /dev/null; then
+    check_ok "direnv installed"
+else
+    check_fail "direnv not found"
+fi
+
+# git configured
+if git config --global user.email &> /dev/null; then
+    check_ok "git user.email configured ($(git config --global user.email))"
+else
+    check_fail "git user.email not configured"
+fi
+
+# ssh-agent
+if [ -n "${SSH_AUTH_SOCK:-}" ]; then
+    check_ok "ssh-agent active (SSH_AUTH_SOCK set)"
+else
+    check_warn "ssh-agent not detected (SSH_AUTH_SOCK not set)"
+fi
+
+{{ if .features.docker -}}
+# docker
+if command -v docker &> /dev/null; then
+    if docker info &> /dev/null; then
+        check_ok "docker is functional"
+    else
+        check_warn "docker installed but not running or no permission"
+    fi
+else
+    check_fail "docker not found"
+fi
+{{ end -}}
+
+echo ""
+echo "--- Results: $OK ok, $FAIL fail, $WARN warn ---"
+
+if [ "$FAIL" -gt 0 ]; then
+    exit 1
+fi

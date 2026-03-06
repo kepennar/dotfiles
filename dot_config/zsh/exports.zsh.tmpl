@@ -1,0 +1,8 @@
+# Environment exports
+# Managed by chezmoi from .chezmoidata.yaml
+
+export EDITOR="{{ .development.editor }}"
+export VISUAL="{{ .development.editor }}"
+
+# SSH agent
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"

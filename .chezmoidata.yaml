@@ -1,16 +1,30 @@
 personal:
   name: "kepennar"
-  email: "{{ .chezmoi.config.data.personal.email | required }}"
-  github_username: "{{ .chezmoi.config.data.personal.username | required }}"
+
+machine:
+  role: "desktop" # desktop or server
+  desktop: "gnome" # gnome, kde, sway, none
+
+features:
+  gui: true
+  docker: true
+  kubernetes: false
+  cloud_sdk: false
+  install_fonts: true
+  flatpak_apps: false
+  work_profile: false
+  install_desktop_apps: true
+  install_dev_tools: true
 
 development:
   editor: "code"
   shell: "zsh"
-  terminal: "terminator"
+  terminal: "ghostty"
 
 fonts:
   terminal: "CaskaydiaCove Nerd Font"
   editor: "CaskaydiaCove Nerd Font"
+  nerd_font_version: "v3.1.1"
 
 colors:
   theme: "dark"
@@ -22,8 +36,3 @@ paths:
 tools:
   node_version: "lts"
   python_version: "3.11"
-
-os:
-  is_arch: "{{ .chezmoi.config.data.os.is_arch | required }}"
-  is_manjaro: "{{ .chezmoi.config.data.os.is_manjaro | required }}"
-  is_ubuntu: "{{ .chezmoi.config.data.os.is_ubuntu | required }}"

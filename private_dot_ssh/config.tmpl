@@ -1,0 +1,21 @@
+{{ if .features.work_profile -}}
+Include ~/.ssh/config.d/*
+{{ end -}}
+
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_rsa_github
+    IdentitiesOnly yes
+
+Host bitbucket.org
+    HostName bitbucket.org
+    User git
+    IdentityFile ~/.ssh/id_rsa_bitbucket
+    IdentitiesOnly yes
+
+Host gitlab.com
+    HostName gitlab.com
+    User git
+    IdentityFile ~/.ssh/id_rsa_gitlab
+    IdentitiesOnly yes

@@ -1,0 +1,30 @@
+#!/bin/bash
+# Setup VS Code settings symlink on macOS
+# On macOS, VS Code stores settings in ~/Library/Application Support/Code/User/
+# This script symlinks it to the chezmoi-managed ~/.config/Code/User/settings.json
+
+set -euo pipefail
+
+{{ if ne .chezmoi.os "darwin" -}}
+exit 0
+{{ end -}}
+
+VSCODE_MACOS_DIR="$HOME/Library/Application Support/Code/User"
+CHEZMOI_SETTINGS="$HOME/.config/Code/User/settings.json"
+
+if [ ! -f "$CHEZMOI_SETTINGS" ]; then
+    echo "WARN: chezmoi-managed settings.json not found at $CHEZMOI_SETTINGS, skipping."
+    exit 0
+fi
+
+if [ -d "$VSCODE_MACOS_DIR" ] && [ ! -L "$VSCODE_MACOS_DIR/settings.json" ]; then
+    echo "==> Symlinking VS Code settings for macOS..."
+    if [ -f "$VSCODE_MACOS_DIR/settings.json" ]; then
+        cp "$VSCODE_MACOS_DIR/settings.json" "$VSCODE_MACOS_DIR/settings.json.bak"
+        echo "  Backed up existing settings to settings.json.bak"
+    fi
+    ln -sf "$CHEZMOI_SETTINGS" "$VSCODE_MACOS_DIR/settings.json"
+    echo "  Symlink created."
+elif [ -L "$VSCODE_MACOS_DIR/settings.json" ]; then
+    echo "VS Code settings symlink already exists, skipping."
+fi

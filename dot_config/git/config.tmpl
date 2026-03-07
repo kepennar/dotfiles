@@ -16,7 +16,11 @@
   autoSetupMerge = always
 
 [credential]
+{{- if eq .chezmoi.os "darwin" }}
+  helper = osxkeychain
+{{- else }}
   helper = cache --timeout=43200
+{{- end }}
 
 [remote]
   pushdefault = origin
@@ -29,12 +33,21 @@
   enabled = true
 
 [merge]
+{{- if eq .chezmoi.os "darwin" }}
+  tool = opendiff
+{{- else }}
   tool = meld
+{{- end }}
   conflictstyle = diff3
 
 [diff]
+{{- if eq .chezmoi.os "darwin" }}
+  guitool = opendiff
+  tool = opendiff
+{{- else }}
   guitool = meld
   tool = meld
+{{- end }}
 
 [core]
   pager = diff-so-fancy | less --tabs=4 -RFX

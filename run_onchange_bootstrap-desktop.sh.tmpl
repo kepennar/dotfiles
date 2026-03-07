@@ -9,11 +9,26 @@ echo "GUI features disabled, skipping."
 exit 0
 {{ end -}}
 
-{{ $osId := .chezmoi.osRelease.id | lower -}}
+{{ $os := .chezmoi.os -}}
+{{ $osId := "" -}}
+{{ if hasKey .chezmoi "osRelease" -}}
+{{   $osId = .chezmoi.osRelease.id | lower -}}
+{{ end -}}
 
 echo "==> Bootstrap desktop apps..."
 
-{{ if or (eq $osId "arch") (eq $osId "manjaro") -}}
+{{ if eq $os "darwin" -}}
+
+brew install starship
+brew install --cask \
+    ghostty \
+    visual-studio-code \
+    google-chrome \
+    discord \
+    obsidian \
+    spotify
+
+{{ else if or (eq $osId "arch") (eq $osId "manjaro") -}}
 
 # Ghostty
 if ! command -v ghostty &> /dev/null; then
@@ -67,7 +82,7 @@ if ! command -v spotify &> /dev/null; then
 fi
 
 {{ else -}}
-echo "WARN: Unsupported OS '{{ $osId }}'. Install desktop apps manually."
+echo "WARN: Unsupported OS. Install desktop apps manually."
 {{ end -}}
 
 echo "==> Desktop bootstrap done."

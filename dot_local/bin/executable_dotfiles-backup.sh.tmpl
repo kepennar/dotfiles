@@ -44,9 +44,16 @@ if [ -d "$WORKSPACE" ]; then
 fi
 
 # Installed packages
-{{ $osId := .chezmoi.osRelease.id | lower -}}
+{{ $os := .chezmoi.os -}}
+{{ $osId := "" -}}
+{{ if hasKey .chezmoi "osRelease" -}}
+{{   $osId = .chezmoi.osRelease.id | lower -}}
+{{ end -}}
 echo "  - Package list"
-{{ if or (eq $osId "arch") (eq $osId "manjaro") -}}
+{{ if eq $os "darwin" -}}
+brew list --formula > "$WORK_DIR/$BACKUP_NAME/packages-brew-formula.txt" 2>/dev/null || true
+brew list --cask > "$WORK_DIR/$BACKUP_NAME/packages-brew-cask.txt" 2>/dev/null || true
+{{ else if or (eq $osId "arch") (eq $osId "manjaro") -}}
 pacman -Qqe > "$WORK_DIR/$BACKUP_NAME/packages-explicit.txt" 2>/dev/null || true
 pacman -Qqm > "$WORK_DIR/$BACKUP_NAME/packages-aur.txt" 2>/dev/null || true
 {{ else if eq $osId "ubuntu" -}}

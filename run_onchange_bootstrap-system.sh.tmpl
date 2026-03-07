@@ -4,11 +4,43 @@
 
 set -euo pipefail
 
-{{ $osId := .chezmoi.osRelease.id | lower -}}
+{{ $os := .chezmoi.os -}}
+{{ $osId := "" -}}
+{{ if hasKey .chezmoi "osRelease" -}}
+{{   $osId = .chezmoi.osRelease.id | lower -}}
+{{ end -}}
 
 echo "==> Bootstrap system packages..."
 
-{{ if or (eq $osId "arch") (eq $osId "manjaro") -}}
+{{ if eq $os "darwin" -}}
+# Install Homebrew if missing
+if ! command -v brew &> /dev/null; then
+    echo "==> Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+brew install \
+    git \
+    curl \
+    wget \
+    unzip \
+    vim \
+    htop \
+    tree \
+    fzf \
+    ripgrep \
+    fd \
+    bat \
+    eza \
+    dust \
+    procs \
+    diff-so-fancy \
+    zsh \
+    zsh-autosuggestions \
+    zsh-syntax-highlighting
+
+{{ else if or (eq $osId "arch") (eq $osId "manjaro") -}}
 sudo pacman -Syu --noconfirm
 
 sudo pacman -S --needed --noconfirm \
@@ -79,7 +111,7 @@ if ! command -v diff-so-fancy &> /dev/null; then
 fi
 
 {{ else -}}
-echo "WARN: Unsupported OS '{{ $osId }}'. Install packages manually."
+echo "WARN: Unsupported OS. Install packages manually."
 {{ end -}}
 
 # Set zsh as default shell
@@ -91,6 +123,10 @@ fi
 {{ if .features.install_fonts -}}
 # Install fonts
 echo "==> Installing fonts..."
+
+{{ if eq $os "darwin" -}}
+brew install --cask font-caskaydia-cove-nerd-font
+{{ else -}}
 mkdir -p ~/.local/share/fonts
 
 {{ if or (eq $osId "arch") (eq $osId "manjaro") -}}
@@ -114,6 +150,7 @@ if ! fc-list | grep -qi "cascadia"; then
 fi
 
 fc-cache -fv
+{{ end -}}
 {{ end -}}
 
 echo "==> System bootstrap done."

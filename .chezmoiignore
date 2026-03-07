@@ -1,3 +1,16 @@
+{{ if eq .chezmoi.os "darwin" }}
+# Linux-only files
+run_once_setup-kde-shortcuts.sh
+dot_local/share/applications
+dot_config/rofi
+{{ end }}
+
+{{ if eq .chezmoi.os "linux" }}
+# macOS-only files
+run_onchange_bootstrap-macos.sh.tmpl
+run_once_setup-vscode-macos.sh.tmpl
+{{ end }}
+
 # Legacy tools (replaced by mise + starship)
 .oh-my-zsh
 .nvm

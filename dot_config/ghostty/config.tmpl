@@ -15,8 +15,10 @@ bold-is-bright = false
 window-padding-x = 10
 window-padding-y = 8
 window-padding-balance = true
+{{ if eq .chezmoi.os "linux" -}}
 window-decoration = false
 gtk-titlebar = false
+{{ end -}}
 window-save-state = always
 resize-overlay = never
 unfocused-split-opacity = 0.85

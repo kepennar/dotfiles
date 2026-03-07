@@ -1,6 +1,11 @@
 # PATH configuration
 # Consolidated PATH - managed by chezmoi
 
+{{ if eq .chezmoi.os "darwin" -}}
+# Homebrew (Apple Silicon)
+eval "$(/opt/homebrew/bin/brew shellenv)"
+{{ end -}}
+
 # Local binaries
 export PATH="$HOME/.local/bin:$HOME/bin:/usr/local/bin:$PATH"
 

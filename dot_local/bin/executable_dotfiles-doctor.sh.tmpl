@@ -25,6 +25,22 @@ check_warn() {
 echo "=== dotfiles-doctor ==="
 echo ""
 
+{{ if eq .chezmoi.os "darwin" -}}
+# Homebrew
+if command -v brew &> /dev/null; then
+    check_ok "homebrew installed ($(brew --version | head -1))"
+else
+    check_fail "homebrew not found"
+fi
+
+# /opt/homebrew/bin in PATH
+if echo "$PATH" | tr ':' '\n' | grep -q '/opt/homebrew/bin'; then
+    check_ok "/opt/homebrew/bin is in PATH"
+else
+    check_fail "/opt/homebrew/bin is NOT in PATH"
+fi
+{{ end -}}
+
 # zsh is default shell
 if [ "$SHELL" = "$(command -v zsh)" ]; then
     check_ok "zsh is the default shell"

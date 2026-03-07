@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=ghostty
+Name=ghostty-terminal
+NoDisplay=true
+StartupNotify=false
+Type=Application
+X-KDE-GlobalAccel-CommandShortcut=true

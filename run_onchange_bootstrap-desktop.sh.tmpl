@@ -31,7 +31,9 @@ fi
 # AUR packages
 yay -S --needed --noconfirm \
     google-chrome \
-    discord
+    discord \
+    obsidian \
+    spotify-launcher
 
 {{ else if eq $osId "ubuntu" -}}
 
@@ -52,6 +54,16 @@ fi
 # Starship prompt
 if ! command -v starship &> /dev/null; then
     curl -sS https://starship.rs/install.sh | sh -s -- -y
+fi
+
+# Obsidian
+if ! command -v obsidian &> /dev/null; then
+    sudo snap install obsidian --classic
+fi
+
+# Spotify
+if ! command -v spotify &> /dev/null; then
+    sudo snap install spotify
 fi
 
 {{ else -}}

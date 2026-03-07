@@ -6,7 +6,7 @@ set -euo pipefail
 
 {{ $os := .chezmoi.os -}}
 {{ $osId := "" -}}
-{{ if hasKey .chezmoi "osRelease" -}}
+{{ if hasKey .chezmoi.osRelease "id" -}}
 {{   $osId = .chezmoi.osRelease.id | lower -}}
 {{ end -}}
 
@@ -117,7 +117,11 @@ echo "WARN: Unsupported OS. Install packages manually."
 # Set zsh as default shell
 if command -v zsh &> /dev/null && [ "$SHELL" != "$(which zsh)" ]; then
     echo "==> Setting zsh as default shell..."
-    chsh -s "$(which zsh)"
+    ZSH_PATH="$(which zsh)"
+    if ! grep -qx "$ZSH_PATH" /etc/shells; then
+        echo "$ZSH_PATH" | sudo tee -a /etc/shells
+    fi
+    chsh -s "$ZSH_PATH"
 fi
 
 {{ if .features.install_fonts -}}

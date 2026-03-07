@@ -143,8 +143,6 @@ Encryption uses [age](https://age-encryption.org/) via chezmoi's built-in suppor
 | direnv | `~/.config/direnv/direnvrc` | Yes | No |
 | VS Code | `~/.config/Code/User/settings.json` | Yes | Yes (fonts) |
 | SSH | `~/.ssh/config` | Yes | Yes |
-| nvim | — | No | — |
-| tmux | — | No | — |
 
 ## Safety Tools
 

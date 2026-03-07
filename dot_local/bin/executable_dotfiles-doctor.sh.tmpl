@@ -22,76 +22,166 @@ check_warn() {
     WARN=$((WARN + 1))
 }
 
+check_cmd() {
+    local cmd="$1"
+    local level="${2:-fail}" # fail or warn
+    local label="${3:-$cmd}"
+    if command -v "$cmd" &> /dev/null; then
+        check_ok "$label installed"
+    elif [ "$level" = "warn" ]; then
+        check_warn "$label not found"
+    else
+        check_fail "$label not found"
+    fi
+}
+
 echo "=== dotfiles-doctor ==="
 echo ""
 
+# ── Package manager ──────────────────────────────────────────────
+
 {{ if eq .chezmoi.os "darwin" -}}
-# Homebrew
+echo "--- Package manager ---"
 if command -v brew &> /dev/null; then
     check_ok "homebrew installed ($(brew --version | head -1))"
 else
     check_fail "homebrew not found"
 fi
 
-# /opt/homebrew/bin in PATH
 if echo "$PATH" | tr ':' '\n' | grep -q '/opt/homebrew/bin'; then
     check_ok "/opt/homebrew/bin is in PATH"
 else
     check_fail "/opt/homebrew/bin is NOT in PATH"
 fi
+echo ""
+
+{{ else -}}
+{{ $osId := "" -}}
+{{ if hasKey .chezmoi.osRelease "id" -}}
+{{   $osId = .chezmoi.osRelease.id | lower -}}
+{{ end -}}
+echo "--- Package manager ---"
+{{ if or (eq $osId "arch") (eq $osId "manjaro") -}}
+if command -v pacman &> /dev/null; then
+    check_ok "pacman available"
+else
+    check_fail "pacman not found"
+fi
+check_cmd yay fail "yay (AUR helper)"
+{{ else if eq $osId "ubuntu" -}}
+if command -v apt &> /dev/null; then
+    check_ok "apt available"
+else
+    check_fail "apt not found"
+fi
+{{ end -}}
+echo ""
 {{ end -}}
 
-# zsh is default shell
+# ── Shell ────────────────────────────────────────────────────────
+
+echo "--- Shell ---"
 if [ "$SHELL" = "$(command -v zsh)" ]; then
     check_ok "zsh is the default shell"
 else
     check_fail "zsh is NOT the default shell (current: $SHELL)"
 fi
 
-# starship
-if command -v starship &> /dev/null; then
-    check_ok "starship installed ($(starship --version | head -1))"
-else
-    check_fail "starship not found"
-fi
+check_cmd zsh fail
+check_cmd starship fail "starship prompt"
+echo ""
 
-# ghostty
-if command -v ghostty &> /dev/null; then
-    check_ok "ghostty installed"
-else
-    check_warn "ghostty not found"
-fi
+# ── System CLI tools ─────────────────────────────────────────────
 
-# mise
+echo "--- System CLI tools ---"
+for tool in git curl wget unzip vim htop tree; do
+    check_cmd "$tool" fail
+done
+
+for tool in fzf ripgrep fd bat eza dust procs diff-so-fancy; do
+    # Some tools have different binary names
+    case "$tool" in
+        ripgrep) bin="rg" ;;
+{{ if eq .chezmoi.os "linux" -}}
+{{ if hasKey .chezmoi.osRelease "id" -}}
+{{ if eq (.chezmoi.osRelease.id | lower) "ubuntu" -}}
+        fd) bin="fdfind" ;;
+        bat) bin="batcat" ;;
+{{ else -}}
+        fd) bin="fd" ;;
+        bat) bin="bat" ;;
+{{ end -}}
+{{ else -}}
+        fd) bin="fd" ;;
+        bat) bin="bat" ;;
+{{ end -}}
+{{ else -}}
+        fd) bin="fd" ;;
+        bat) bin="bat" ;;
+{{ end -}}
+        *) bin="$tool" ;;
+    esac
+    check_cmd "$bin" warn "$tool"
+done
+echo ""
+
+# ── Dev tools ────────────────────────────────────────────────────
+
+{{ if .features.install_dev_tools -}}
+echo "--- Dev tools ---"
+check_cmd mise fail
+check_cmd direnv fail
+check_cmd lazygit fail
+check_cmd gh fail "GitHub CLI (gh)"
+check_cmd just fail
+
+# mise runtimes
 if command -v mise &> /dev/null; then
-    check_ok "mise installed ($(mise --version 2>/dev/null | head -1))"
-else
-    check_fail "mise not found"
+    if mise ls --installed 2>/dev/null | grep -q .; then
+        check_ok "mise has runtimes installed"
+    else
+        check_warn "mise installed but no runtimes found (run 'mise install')"
+    fi
 fi
+echo ""
+{{ end -}}
 
-# direnv
-if command -v direnv &> /dev/null; then
-    check_ok "direnv installed"
-else
-    check_fail "direnv not found"
-fi
+# ── Git config ───────────────────────────────────────────────────
 
-# git configured
+echo "--- Git ---"
 if git config --global user.email &> /dev/null; then
     check_ok "git user.email configured ($(git config --global user.email))"
 else
     check_fail "git user.email not configured"
 fi
 
-# ssh-agent
+if git config --global user.name &> /dev/null; then
+    check_ok "git user.name configured ($(git config --global user.name))"
+else
+    check_fail "git user.name not configured"
+fi
+echo ""
+
+# ── SSH ──────────────────────────────────────────────────────────
+
+echo "--- SSH ---"
 if [ -n "${SSH_AUTH_SOCK:-}" ]; then
     check_ok "ssh-agent active (SSH_AUTH_SOCK set)"
 else
     check_warn "ssh-agent not detected (SSH_AUTH_SOCK not set)"
 fi
 
+if [ -d "$HOME/.ssh" ] && ls "$HOME/.ssh/id_"* &> /dev/null; then
+    check_ok "SSH keys found in ~/.ssh"
+else
+    check_warn "no SSH keys found in ~/.ssh"
+fi
+echo ""
+
+# ── Docker ───────────────────────────────────────────────────────
+
 {{ if .features.docker -}}
-# docker
+echo "--- Docker ---"
 if command -v docker &> /dev/null; then
     if docker info &> /dev/null; then
         check_ok "docker is functional"
@@ -101,10 +191,84 @@ if command -v docker &> /dev/null; then
 else
     check_fail "docker not found"
 fi
+echo ""
 {{ end -}}
 
+# ── Desktop apps ─────────────────────────────────────────────────
+
+{{ if and .features.gui .features.install_desktop_apps -}}
+echo "--- Desktop apps ---"
+check_cmd ghostty warn
+check_cmd code warn "VS Code"
+
+{{ if eq .chezmoi.os "darwin" -}}
+# macOS: check apps via brew or /Applications
+for app in "Google Chrome" Discord Obsidian Spotify; do
+    if [ -d "/Applications/${app}.app" ]; then
+        check_ok "${app} installed"
+    else
+        check_warn "${app} not found in /Applications"
+    fi
+done
+{{ else -}}
+check_cmd google-chrome-stable warn "Google Chrome"
+check_cmd discord warn
+check_cmd obsidian warn
+check_cmd spotify warn
+{{ end -}}
 echo ""
-echo "--- Results: $OK ok, $FAIL fail, $WARN warn ---"
+{{ end -}}
+
+# ── Fonts ────────────────────────────────────────────────────────
+
+{{ if .features.install_fonts -}}
+echo "--- Fonts ---"
+{{ if eq .chezmoi.os "darwin" -}}
+if brew list --cask 2>/dev/null | grep -q "font-caskaydia"; then
+    check_ok "CaskaydiaCove Nerd Font installed"
+else
+    check_warn "CaskaydiaCove Nerd Font not found (brew cask)"
+fi
+{{ else -}}
+if command -v fc-list &> /dev/null && fc-list | grep -qi "cascadia"; then
+    check_ok "CaskaydiaCove Nerd Font installed"
+else
+    check_warn "CaskaydiaCove Nerd Font not found"
+fi
+{{ end -}}
+echo ""
+{{ end -}}
+
+# ── macOS defaults ───────────────────────────────────────────────
+
+{{ if and (eq .chezmoi.os "darwin") .features.macos_defaults -}}
+echo "--- macOS defaults ---"
+key_repeat=$(defaults read NSGlobalDomain KeyRepeat 2>/dev/null || echo "unset")
+if [ "$key_repeat" = "2" ]; then
+    check_ok "KeyRepeat is 2"
+else
+    check_warn "KeyRepeat is $key_repeat (expected 2)"
+fi
+
+autohide=$(defaults read com.apple.dock autohide 2>/dev/null || echo "0")
+if [ "$autohide" = "1" ]; then
+    check_ok "Dock autohide enabled"
+else
+    check_warn "Dock autohide not enabled"
+fi
+
+show_all=$(defaults read com.apple.finder AppleShowAllFiles 2>/dev/null || echo "0")
+if [ "$show_all" = "1" ]; then
+    check_ok "Finder shows hidden files"
+else
+    check_warn "Finder does not show hidden files"
+fi
+echo ""
+{{ end -}}
+
+# ── Results ──────────────────────────────────────────────────────
+
+echo "=== Results: $OK ok, $FAIL fail, $WARN warn ==="
 
 if [ "$FAIL" -gt 0 ]; then
     exit 1

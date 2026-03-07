@@ -11,7 +11,7 @@ exit 0
 
 {{ $os := .chezmoi.os -}}
 {{ $osId := "" -}}
-{{ if hasKey .chezmoi "osRelease" -}}
+{{ if hasKey .chezmoi.osRelease "id" -}}
 {{   $osId = .chezmoi.osRelease.id | lower -}}
 {{ end -}}
 
@@ -20,7 +20,7 @@ echo "==> Bootstrap desktop apps..."
 {{ if eq $os "darwin" -}}
 
 brew install starship
-brew install --cask \
+brew install --adopt --cask \
     ghostty \
     visual-studio-code \
     google-chrome \

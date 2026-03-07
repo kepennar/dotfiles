@@ -46,7 +46,7 @@ fi
 # Installed packages
 {{ $os := .chezmoi.os -}}
 {{ $osId := "" -}}
-{{ if hasKey .chezmoi "osRelease" -}}
+{{ if hasKey .chezmoi.osRelease "id" -}}
 {{   $osId = .chezmoi.osRelease.id | lower -}}
 {{ end -}}
 echo "  - Package list"

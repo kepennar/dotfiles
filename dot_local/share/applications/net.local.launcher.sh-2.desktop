@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=/home/kepennar/.config/rofi/launchers/type-2/launcher.sh
+Name=rofi-launcher
+NoDisplay=true
+StartupNotify=false
+Type=Application
+X-KDE-GlobalAccel-CommandShortcut=true

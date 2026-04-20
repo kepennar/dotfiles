@@ -81,7 +81,7 @@ echo ""
 # ── Shell ────────────────────────────────────────────────────────
 
 echo "--- Shell ---"
-if [ "$SHELL" = "$(command -v zsh)" ]; then
+if [ "${SHELL##*/}" = "zsh" ]; then
     check_ok "zsh is the default shell"
 else
     check_fail "zsh is NOT the default shell (current: $SHELL)"

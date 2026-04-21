@@ -10,7 +10,6 @@ dot_config/rofi
 run_onchange_bootstrap-macos.sh.tmpl
 run_once_setup-vscode-macos.sh.tmpl
 {{ end }}
-
 # Legacy tools (replaced by mise + starship)
 .oh-my-zsh
 .nvm

@@ -9,7 +9,6 @@ set -euo pipefail
 {{ if hasKey .chezmoi.osRelease "id" -}}
 {{   $osId = .chezmoi.osRelease.id | lower -}}
 {{ end -}}
-
 echo "==> Bootstrap system packages..."
 
 {{ if eq $os "darwin" -}}
@@ -77,6 +76,7 @@ sudo apt update && sudo apt upgrade -y
 
 sudo apt install -y \
     build-essential \
+    cargo \
     git \
     curl \
     wget \
@@ -91,6 +91,8 @@ sudo apt install -y \
     zsh \
     zsh-autosuggestions \
     zsh-syntax-highlighting
+
+export PATH="$HOME/.cargo/bin:$PATH"
 
 # Tools not in default ubuntu repos
 if ! command -v eza &> /dev/null; then
@@ -115,24 +117,31 @@ echo "WARN: Unsupported OS. Install packages manually."
 {{ end -}}
 
 # Set zsh as default shell
-if command -v zsh &> /dev/null && [ "$SHELL" != "$(which zsh)" ]; then
-    echo "==> Setting zsh as default shell..."
-    ZSH_PATH="$(which zsh)"
-    if ! grep -qx "$ZSH_PATH" /etc/shells; then
-        echo "$ZSH_PATH" | sudo tee -a /etc/shells
+if command -v zsh &> /dev/null; then
+    ZSH_PATH="$(command -v zsh)"
+    LOGIN_SHELL="$ZSH_PATH"
+
+    {{ if eq .chezmoi.os "darwin" -}}
+    if ! grep -qxF "$ZSH_PATH" /etc/shells; then
+        LOGIN_SHELL="/bin/zsh"
     fi
-    chsh -s "$ZSH_PATH"
+    {{ end -}}
+
+    if [ "$SHELL" != "$LOGIN_SHELL" ]; then
+        echo "==> Setting zsh as default shell..."
+        chsh -s "$LOGIN_SHELL"
+    fi
 fi
 
 {{ if .features.install_fonts -}}
 # Install fonts
 echo "==> Installing fonts..."
-
 {{ if eq $os "darwin" -}}
 brew install --cask font-caskaydia-cove-nerd-font
 {{ else -}}
 mkdir -p ~/.local/share/fonts
 
+{{ $osId := .chezmoi.osRelease.id | lower -}}
 {{ if or (eq $osId "arch") (eq $osId "manjaro") -}}
 if ! fc-list | grep -qi "cascadia"; then
     sudo pacman -S --needed --noconfirm ttf-cascadia-code-nerd

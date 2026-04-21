@@ -14,7 +14,6 @@ exit 0
 {{ if hasKey .chezmoi.osRelease "id" -}}
 {{   $osId = .chezmoi.osRelease.id | lower -}}
 {{ end -}}
-
 echo "==> Bootstrap desktop apps..."
 
 {{ if eq $os "darwin" -}}

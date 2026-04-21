@@ -4,6 +4,8 @@ Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
 Declarative, reproducible setup: **Ghostty** + **Starship** + **mise** + **direnv** + **zsh**.
 
+Supports **Arch/Manjaro**, **Ubuntu**, and **macOS (Apple Silicon)**.
+
 ## Philosophy
 
 - **Declarative** — all config lives in this repo, applied via `chezmoi apply`
@@ -22,13 +24,15 @@ Declarative, reproducible setup: **Ghostty** + **Starship** + **mise** + **diren
 run_onchange_bootstrap-system.sh.tmpl    # Base packages, CLI tools, fonts, zsh
 run_onchange_bootstrap-dev.sh.tmpl       # mise, direnv, lazygit, docker
 run_onchange_bootstrap-desktop.sh.tmpl   # GUI apps (ghostty, vscode, starship)
+run_onchange_bootstrap-macos.sh.tmpl     # macOS defaults (keyboard, Finder, Dock)
+run_once_setup-vscode-macos.sh.tmpl      # VS Code settings symlink on macOS
 
 dot_zshrc.tmpl                           # Minimal zshrc (sources modules)
 dot_config/
   zsh/
     path.zsh.tmpl                        # PATH consolidation
     exports.zsh.tmpl                     # EDITOR, SSH_AUTH_SOCK
-    completion.zsh                       # compinit + plugins
+    completion.zsh.tmpl                  # compinit + plugins (OS-conditional paths)
     aliases.zsh                          # Git, eza, modern CLI aliases
     functions.zsh.tmpl                   # Shell functions (mkd, fgit, etc.)
     integrations.zsh.tmpl                # mise, direnv, starship activation
@@ -68,6 +72,8 @@ Static variables are defined in `.chezmoidata.yaml`. Personal data (`email`, `gi
 | `features` | `work_profile` | `false` | Work-specific config (SSH includes) |
 | `features` | `install_desktop_apps` | `true` | Desktop app bootstrap |
 | `features` | `install_dev_tools` | `true` | Dev tools bootstrap |
+| `features` | `homebrew` | `true` | Homebrew package manager (macOS) |
+| `features` | `macos_defaults` | `false` | Apply macOS system defaults (keyboard, Finder, Dock) |
 | `development` | `editor` | `code` | Default editor |
 | `development` | `shell` | `zsh` | Default shell |
 | `development` | `terminal` | `ghostty` | Terminal emulator |
@@ -88,9 +94,19 @@ mkdir -p ~/.config/sops/age
 chezmoi age-keygen --output ~/.config/sops/age/chezmoi.txt
 ```
 
-### Fresh install
+### Fresh install (Linux)
 
 ```bash
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply kepennar
+```
+
+### Fresh install (macOS)
+
+```bash
+# If Homebrew is already installed:
+brew install chezmoi && chezmoi init --apply kepennar
+
+# Otherwise, bootstrap-system will install Homebrew automatically:
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply kepennar
 ```
 
@@ -106,9 +122,10 @@ chezmoi apply   # apply
 
 ### Script execution order
 
-1. `bootstrap-system` — base packages, CLI tools, fonts, sets zsh as default shell
-2. `bootstrap-dev` — mise, direnv, lazygit, gh, just, docker
-3. `bootstrap-desktop` — ghostty, VS Code, starship, chrome, discord
+1. `bootstrap-system` — base packages, CLI tools, fonts, sets zsh as default shell (Homebrew on macOS, pacman/apt on Linux)
+2. `bootstrap-dev` — mise, direnv, lazygit, gh, just, docker (Docker Desktop cask on macOS)
+3. `bootstrap-desktop` — ghostty, VS Code, starship, chrome, discord (brew casks on macOS)
+4. `bootstrap-macos` *(macOS only)* — system defaults (keyboard repeat, Finder, Dock) — gated by `macos_defaults: true`
 
 Scripts run on change (hash of `.chezmoidata.yaml`). To skip a phase, set its feature flag to `false`:
 
@@ -170,7 +187,7 @@ Creates a `.tar.gz` archive in `~/backups/` containing:
 - SSH keys (`~/.ssh/`)
 - GPG keys (armor export)
 - Workspace repos list
-- Installed packages (pacman/apt)
+- Installed packages (pacman/apt on Linux, brew formula/cask on macOS)
 - VS Code extensions
 - Chezmoi status and data
 
@@ -237,12 +254,15 @@ The `run_onchange_` scripts will re-execute because the hash of `.chezmoidata.ya
 
 ## OS Support
 
-Auto-detected via `chezmoi.osRelease.id`:
+Auto-detected via `.chezmoi.os` (darwin/linux) and `.chezmoi.osRelease.id` (Linux distros):
 
-| OS | Package manager | AUR | Notes |
-|----|----------------|-----|-------|
-| **Arch / Manjaro** | pacman | yay | Primary target |
-| **Ubuntu** | apt | — | Manual installs for some tools |
+| OS | Package manager | Notes |
+|----|----------------|-------|
+| **macOS (Apple Silicon)** | Homebrew | `/opt/homebrew` prefix, brew casks for GUI apps |
+| **Arch / Manjaro** | pacman + yay | Primary Linux target |
+| **Ubuntu** | apt | Manual installs for some tools |
+
+Platform-specific files are excluded via `.chezmoiignore` — Linux-only files (KDE shortcuts, rofi) are ignored on macOS, and macOS-only files (bootstrap-macos, vscode symlink) are ignored on Linux.
 
 ## Troubleshooting
 
@@ -252,7 +272,11 @@ Auto-detected via `chezmoi.osRelease.id`:
 
 **Old oh-my-zsh errors:** Remove `~/.oh-my-zsh` directory — it is no longer used.
 
-**Fonts not rendering:** Run `fc-cache -fv` and restart your terminal.
+**Fonts not rendering (Linux):** Run `fc-cache -fv` and restart your terminal.
+
+**Fonts not rendering (macOS):** Run `brew install --cask font-caskaydia-cove-nerd-font` and restart your terminal.
+
+**Homebrew not found (macOS):** The `bootstrap-system` script installs Homebrew automatically. If PATH is wrong, ensure `eval "$(/opt/homebrew/bin/brew shellenv)"` runs in your shell — this is handled by `path.zsh.tmpl`.
 
 **Bootstrap script not re-running:** Scripts trigger on change to `.chezmoidata.yaml`. Edit the data file or run `chezmoi apply --force`.
 

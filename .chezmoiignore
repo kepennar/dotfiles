@@ -7,6 +7,7 @@ dot_config/rofi
 
 {{ if eq .chezmoi.os "linux" }}
 # macOS-only files
+dot_aerospace.toml
 run_onchange_bootstrap-macos.sh.tmpl
 run_once_setup-vscode-macos.sh.tmpl
 {{ end }}

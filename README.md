@@ -262,7 +262,7 @@ Auto-detected via `.chezmoi.os` (darwin/linux) and `.chezmoi.osRelease.id` (Linu
 | **Arch / Manjaro** | pacman + yay | Primary Linux target |
 | **Ubuntu** | apt | Manual installs for some tools |
 
-Platform-specific files are excluded via `.chezmoiignore` — Linux-only files (KDE shortcuts, rofi) are ignored on macOS, and macOS-only files (bootstrap-macos, vscode symlink) are ignored on Linux.
+Platform-specific files are excluded via `.chezmoiignore` — Linux-only files (KDE shortcuts, rofi) are ignored on macOS, and macOS-only files (Aerospace config, bootstrap-macos, VS Code symlink) are ignored on Linux.
 
 ## Troubleshooting
 

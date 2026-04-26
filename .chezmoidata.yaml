@@ -16,7 +16,7 @@ features:
   install_desktop_apps: true
   install_dev_tools: true
   homebrew: true
-  macos_defaults: false
+  macos_defaults: true
 
 development:
   editor: "code"

@@ -18,14 +18,33 @@ echo "==> Applying macOS defaults..."
 # Keyboard
 defaults write NSGlobalDomain KeyRepeat -int 2
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
+# Keyboard - Use keyboard navigation to move focus between controls
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
-# Finder
+# Finder #
+# Finder - show hidden files
 defaults write com.apple.finder AppleShowAllFiles -bool true
+# Finder - shows full path at bottom of Finder
 defaults write com.apple.finder ShowPathbar -bool true
+# Finder - show full POSIX path in title bar
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+# Finder - show all filename extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+# Finder - list view
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 
 # Dock
 defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock tilesize -int 36
+# Dock - speed up auto-hide/show
+defaults write com.apple.dock autohide-time-modifier -float 0.15
+
+# Disable .DS_Store on network
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+
+# Screenshots
+mkdir -p "$HOME/Screenshots"
+defaults write com.apple.screencapture location -string "$HOME/Screenshots"
+defaults write com.apple.screencapture disable-shadow -bool true
 
 echo "==> macOS defaults applied. Some changes require logout to take effect."

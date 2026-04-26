@@ -1,3 +1,10 @@
+{{ if eq .chezmoi.os "darwin" -}}
+# GNU tools on MacOS
+alias sed=gsed
+alias grep=ggrep
+alias ls=gls
+{{ end -}}
+
 # Git aliases
 alias gc='git commit'
 alias gco='git checkout'

@@ -37,7 +37,11 @@ brew install \
     diff-so-fancy \
     zsh \
     zsh-autosuggestions \
-    zsh-syntax-highlighting
+    zsh-syntax-highlighting \
+    coreutils \
+    gnu-sed \
+    gawk \
+    grep
 
 {{ else if or (eq $osId "arch") (eq $osId "manjaro") -}}
 sudo pacman -Syu --noconfirm

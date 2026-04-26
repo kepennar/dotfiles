@@ -5,3 +5,5 @@
 # Decrypted secrets
 *.dec
 *.plain
+
+bin

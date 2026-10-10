@@ -12,7 +12,7 @@ features:
   cloud_sdk: false
   install_fonts: true
   flatpak_apps: false
-  work_profile: false
+  work_profile: true
   install_desktop_apps: true
   install_dev_tools: true
   homebrew: true

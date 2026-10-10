@@ -68,7 +68,7 @@
   "[jsonc]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
-  "extensions.autoUpdate": false,
+  "extensions.autoUpdate": "off",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "quickfix.biome": "explicit"
@@ -107,5 +107,30 @@
   "prisma.scriptRunner": "pnpm",
   "github.copilot.nextEditSuggestions.enabled": false,
   "editor.inlineSuggest.edits.renderSideBySide": "never",
-  "diffEditor.ignoreTrimWhitespace": false,  
+  "diffEditor.ignoreTrimWhitespace": false,
+  "remote.defaultExtensionsIfInstalledLocally": [
+    "GitHub.copilot",
+    "GitHub.copilot-chat",
+    "GitHub.vscode-pull-request-github"
+  ],
+  "json.schemaDownload.trustedDomains": {
+    "https://schemastore.azurewebsites.net/": true,
+    "https://raw.githubusercontent.com/microsoft/vscode/": true,
+    "https://raw.githubusercontent.com/devcontainers/spec/": true,
+    "https://www.schemastore.org/": true,
+    "https://json.schemastore.org/": true,
+    "https://json-schema.org/": true,
+    "https://developer.microsoft.com/json-schemas/": true,
+    "https://biomejs.dev": true
+  },
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "terminal.integrated.mouseWheelScrollSensitivity": 3,
+  "claudeCode.preferredLocation": "panel",
+  "pgsql.serverGroups": [
+    {
+      "name": "Servers",
+      "id": "1E1C0A15-5E65-4E06-B595-BC8AC0CB6279",
+      "isDefault": true
+    }
+  ]
 }

@@ -9,6 +9,7 @@
   commend = commit --amend --no-edit
   prettylog = log --pretty=oneline --graph --decorate
   shorty = status --short --branch
+  fixup = "!f() { git commit --fixup=\"$1\" && GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash \"$1\"^; }; f"
 
 [branch]
   autosetuprebase = always
@@ -52,7 +53,7 @@
 [core]
   pager = diff-so-fancy | less --tabs=4 -RFX
   excludesfile = ~/.config/git/ignore
-  editor = {{ .development.editor }}
+  editor = nano
 
 [color]
   ui = true
@@ -76,3 +77,14 @@
 
 [pull]
   default = current
+
+[filter "lfs"]
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+{{- if .features.work_profile }}
+
+[coderabbit]
+  machineId = cli/b4e1cb49353f4c64909e0dd5cafe88b4
+{{- end }}

@@ -3,8 +3,12 @@
 
 export EDITOR="{{ .development.editor }}"
 export VISUAL="{{ .development.editor }}"
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # SSH agent
 {{ if ne .chezmoi.os "darwin" -}}
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 {{ end -}}
+
+# Tokens (age-encrypted in chezmoi source)
+[[ -f ~/.config/zsh/secrets.zsh ]] && source ~/.config/zsh/secrets.zsh

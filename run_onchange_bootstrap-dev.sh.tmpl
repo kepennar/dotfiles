@@ -18,13 +18,11 @@ echo "==> Bootstrap dev tools..."
 
 {{ if eq $os "darwin" -}}
 
-brew install mise direnv lazygit gh just
+brew install mise direnv lazygit gh just herdr
 
 {{ if .features.docker -}}
-# Docker Desktop for macOS
-if ! command -v docker &> /dev/null; then
-    brew install --cask docker
-fi
+# OrbStack (Docker engine + Linux machines) for macOS
+brew install --adopt --cask orbstack
 {{ end -}}
 
 {{ else if or (eq $osId "arch") (eq $osId "manjaro") -}}
@@ -91,6 +89,13 @@ fi
 
 {{ else -}}
 echo "WARN: Unsupported OS. Install dev tools manually."
+{{ end -}}
+
+{{ if eq $os "linux" -}}
+# herdr (official installer → ~/.local/bin)
+if ! command -v herdr &> /dev/null; then
+    curl -fsSL https://herdr.dev/install.sh | sh
+fi
 {{ end -}}
 
 # Post-install: mise runtimes

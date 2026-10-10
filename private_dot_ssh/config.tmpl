@@ -1,3 +1,9 @@
+{{ if eq .chezmoi.os "darwin" -}}
+# Added by OrbStack: 'orb' SSH host for Linux machines
+# This only works if it's at the top of ssh_config (before any Host blocks).
+Include ~/.orbstack/ssh/config
+
+{{ end -}}
 {{ if .features.work_profile -}}
 Include ~/.ssh/config.d/*
 {{ end -}}
@@ -5,17 +11,19 @@ Include ~/.ssh/config.d/*
 Host github.com
     HostName github.com
     User git
-    IdentityFile ~/.ssh/id_rsa_github
+    IdentityFile ~/.ssh/id_ed25519_github
     IdentitiesOnly yes
-
-Host bitbucket.org
-    HostName bitbucket.org
-    User git
-    IdentityFile ~/.ssh/id_rsa_bitbucket
-    IdentitiesOnly yes
+    AddKeysToAgent yes
+{{- if eq .chezmoi.os "darwin" }}
+    UseKeychain yes
+{{- end }}
 
 Host gitlab.com
     HostName gitlab.com
     User git
-    IdentityFile ~/.ssh/id_rsa_gitlab
+    IdentityFile ~/.ssh/id_ed25519_gitlab
     IdentitiesOnly yes
+    AddKeysToAgent yes
+{{- if eq .chezmoi.os "darwin" }}
+    UseKeychain yes
+{{- end }}

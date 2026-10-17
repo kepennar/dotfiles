@@ -80,7 +80,7 @@ Static variables are defined in `.chezmoidata.yaml`. Personal data (`email`, `gi
 | `fonts` | `terminal` | `CaskaydiaCove Nerd Font` | Terminal font |
 | `fonts` | `editor` | `CaskaydiaCove Nerd Font` | Editor font |
 | `paths` | `workspace` | `~/workspace` | Workspace directory |
-| `tools` | `node_version` | `lts` | Node.js version for mise |
+| `tools` | `node_version` | `25.9.0` | Node.js version for mise |
 | `tools` | `python_version` | `3.11` | Python version for mise |
 
 ## Bootstrap Workflow

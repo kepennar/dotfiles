@@ -11,6 +11,10 @@ dot_aerospace.toml
 run_onchange_bootstrap-macos.sh.tmpl
 run_once_setup-vscode-macos.sh.tmpl
 {{ end }}
+# Repo files, not dotfiles
+README.md
+Brewfile
+
 # Legacy tools (replaced by mise + starship)
 .oh-my-zsh
 .nvm

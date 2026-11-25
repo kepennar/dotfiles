@@ -123,7 +123,7 @@ chezmoi apply   # apply
 ### Script execution order
 
 1. `bootstrap-system` — base packages, CLI tools, fonts, sets zsh as default shell (Homebrew on macOS, pacman/apt on Linux)
-2. `bootstrap-dev` — mise, direnv, lazygit, gh, just, docker (Docker Desktop cask on macOS)
+2. `bootstrap-dev` — mise, direnv, lazygit, gh, just, docker (OrbStack cask on macOS)
 3. `bootstrap-desktop` — ghostty, VS Code, starship, chrome, discord (brew casks on macOS)
 4. `bootstrap-macos` *(macOS only)* — system defaults (keyboard repeat, Finder, Dock) — gated by `macos_defaults: true`
 

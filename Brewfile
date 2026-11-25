@@ -121,8 +121,6 @@ cask "codex"
 cask "cursor"
 # Universal database tool and SQL client
 cask "dbeaver-community"
-# App to build and share containerised applications and microservices
-cask "docker-desktop"
 cask "font-caskaydia-cove-nerd-font"
 # Set of tools to manage resources and applications hosted on Google Cloud
 cask "gcloud-cli"
@@ -187,4 +185,3 @@ vscode "vercel.turbo-vsc"
 vscode "vitest.explorer"
 vscode "vue.volar"
 npm "@fission-ai/openspec"
-npm "interlinked-cli"
